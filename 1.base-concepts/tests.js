@@ -31,6 +31,7 @@ describe('Домашнее задание к занятию 1. «Основны�
       const amount = 'test';
       expect(calculateTotalMortgage(15, 0, amount, nextYearDate)).toEqual(`Параметр "Общая стоимость" содержит неправильное значение "${amount}"`);
     });
+	 
     it('верно считать кредит: кейс #1', () => {
       const nextYearDate = new Date(new Date().setFullYear(new Date().getFullYear() + 1));
       expect(calculateTotalMortgage(10, 0, 50000, nextYearDate)).toEqual(52749.53);
