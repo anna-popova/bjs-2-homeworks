@@ -16,10 +16,47 @@ function solveEquation(a, b, c) {
 }
 
 
-// function calculateTotalMortgage(percent, contribution, amount, date) {
-//   let totalAmount;
+function calculateTotalMortgage(percent, contribution, amount, date) {
+	let totalAmount;
+	percent = +(percent / 100);
+	contribution = +contribution;
+	amount = +amount;
 
-//   // код для задачи №2 писать здесь
+	// Проконтролируйте корректность введенных данных
+	if (isNaN(percent)) {
+		alert (`Параметр "Процентная ставка" содержит неправильное значение "${percent}"`);
+	}
+	if (isNaN(contribution)) {
+		alert (`Параметр "Начальный взнос" содержит неправильное значение "${contribution}"`);
+	}
+	if (isNaN(amount)) {
+		alert (`Параметр "Общая стоимость" содержит неправильное значение "${amount}"`);
+	}
 
-//   return totalAmount;
-// }
+	//Посчитайте тело кредита: сумма, которую необходимо вернуть банку
+	let creditBody = amount - contribution;
+	console.log(creditBody);
+
+	//Посчитайте на какой срок был выдан кредит (в месяцах)
+	let currentMonth = new Date().getMonth();
+	let currentYear = new Date().getFullYear();
+	let yearsGap = date.getFullYear() - currentYear;
+	//количество месяцев = разница в годах * 12 - текущий месяц + месяц пришедший из даты;
+	let monthsGap = yearsGap * 12 - currentMonth + date.getMonth();
+	console.log(monthsGap);
+
+	//Ежемесячная оплата
+	// Платеж = S * (P + (P / (((1 + P)^n) - 1))), где: 
+	// S - тело кредита, P - 1/12 процентной ставки (от 0 до 1), n - количество месяцев ^ - возведение в степень
+	let partOfpercent = percent / 12;
+	console.log(partOfpercent);
+	let monthPayment = creditBody * (partOfpercent + (partOfpercent / (((1 + partOfpercent) ** monthsGap) - 1)));
+	console.log(monthPayment);
+
+	//Посчитайте общую сумму, которую придется заплатить клиенту.Округлите результат до двух значений после запятой
+	totalAmount = +(monthPayment * monthsGap).toFixed(2);
+
+	//Выведите результат в консоль, а также верните его из функции
+	console.log(totalAmount);
+	return totalAmount;
+}
