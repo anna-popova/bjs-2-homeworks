@@ -18,20 +18,22 @@ function solveEquation(a, b, c) {
 
 function calculateTotalMortgage(percent, contribution, amount, date) {
 	let totalAmount;
-	percent = +(percent / 100);
-	contribution = +contribution;
-	amount = +amount;
 
 	// Проконтролируйте корректность введенных данных
 	if (isNaN(percent)) {
-		alert (`Параметр "Процентная ставка" содержит неправильное значение "${percent}"`);
+		return `Параметр "Процентная ставка" содержит неправильное значение "${percent}"`;
 	}
 	if (isNaN(contribution)) {
-		alert (`Параметр "Начальный взнос" содержит неправильное значение "${contribution}"`);
+		return `Параметр "Начальный взнос" содержит неправильное значение "${contribution}"`;
 	}
 	if (isNaN(amount)) {
-		alert (`Параметр "Общая стоимость" содержит неправильное значение "${amount}"`);
+		return `Параметр "Общая стоимость" содержит неправильное значение "${amount}"`;
 	}
+
+	//Преобразование введенных данных к числу
+	percent = +(percent / 100);
+	contribution = +contribution;
+	amount = +amount;
 
 	//Посчитайте тело кредита: сумма, которую необходимо вернуть банку
 	let creditBody = amount - contribution;
