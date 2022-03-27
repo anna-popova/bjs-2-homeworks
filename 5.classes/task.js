@@ -1,29 +1,71 @@
 class PrintEditionItem {
 	constructor(name, releaseDate, pagesCount) {
-		this.name = name
-		this.releaseDate = releaseDate
-		this.pagesCount = pagesCount
-    this.state = 100;
-    this.type = null;
+		this.name = name;
+		this.releaseDate = releaseDate;
+		this.pagesCount = pagesCount;
+		this._state = 100;
+		this.type = null;
 	}
 
-  fix() {
-    let fixedState = this.state * 1.5;
-    return fixedState;
-  }
+	fix() {
+		this.state *= 1.5; //!почему здесь не this._state *= 1.5; ??????????????????
+	}
 
-  set stateQuality(fixedState) {
-    if (fixedState < 0) {
-      this.state = 0;
-    } else if (fixedState > 100) {
-      this.state = 100;
-    } else {
-      this.state = fixedState;
-    }
-  }
+	set state(value) {
+		this._state = value;
 
-  get stateQuality() {
-    return this.state;
-  }
+		if (value < 0) {
+			return this._state = 0;
+		}
 
+		if (value > 100) {
+			return this._state = 100;
+		}
+	}
+
+	get state() {
+		return this._state;
+	}
+}
+
+const sherlock = new PrintEditionItem(
+	"Полное собрание повестей и рассказов о Шерлоке Холмсе в одном томе",
+	2019,
+	1008
+);
+
+class Magazine extends PrintEditionItem {
+	constructor(name, releaseDate, pagesCount, state) {
+		super(name, releaseDate, pagesCount, state);
+		this.type = 'magazine';
+	}
+}
+
+class Book extends PrintEditionItem {
+	constructor(author, name, releaseDate, pagesCount, state) {
+		super(name, releaseDate, pagesCount, state);
+		this.author = author;
+		this.type = 'book';
+	}
+}
+
+class NovelBook extends Book {
+	constructor(author, name, releaseDate, pagesCount, state) {
+		super(author, name, releaseDate, pagesCount, state);
+		this.type = 'novel';
+	}
+}
+
+class FantasticBook extends Book {
+	constructor(author, name, releaseDate, pagesCount, state) {
+		super(author, name, releaseDate, pagesCount, state);
+		this.type = 'fantastic';
+	}
+}
+
+class DetectiveBook extends Book {
+	constructor(author, name, releaseDate, pagesCount, state) {
+		super(author, name, releaseDate, pagesCount, state);
+		this.type = 'detective';
+	}
 }
