@@ -74,22 +74,22 @@ class Library {
 	}
 
 	addBook(book) {
-		if (book._state > 30) {
+		if (book.state > 30) {
 			this.books.push(book);
 		}
 	}
 
-	// findBookBy(type, value) {
-
-	// 	for(let i = 0; i < this.books.length; i++) {
-	// 		for(let key in this.books[i]) {
-	// 			if(type === key && value === this.books[i][key]) {
-	// 				return this.books[i];
-	// 			}
-	// 		}
-	// 	}
-	// }
+	findBookBy(type, value) {
+		for(let i = 0; i < this.books.length; i++) {
+			if(this.books.find((item, index) => item.name === value && index === type)) {
+				return this.books[i];
+			} else {
+				return null;
+			}
+		}
+	}
 }
+
 
 const library = new Library("Библиотека имени Ленина");
 
