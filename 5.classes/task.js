@@ -79,6 +79,9 @@ class Library {
 		}
 	}
 
+	//!не работает
+	//нужен ли вообще цикл с for(let i = 0; i < this.books.length; i++) ??? И если не нужен, то как мне вернуть книгу??? return this.books - будет весь массив объектов возвращать, а не отдельную книгу.
+	//проверку на название книги вроде сделала правильно item.name === value , а как сделать проверку на ключ (тип, автор, название, год выпуска и пр.) ??? На вебинаре преподаватель сказал, что надо использовать динамические свойства (т.е. указывать в квадратных скобках). Но как это технически реализовать, примера не было (((
 	findBookBy(type, value) {
 		for(let i = 0; i < this.books.length; i++) {
 			if(this.books.find((item, index) => item.name === value && index === type)) {
@@ -88,15 +91,18 @@ class Library {
 			}
 		}
 	}
+
+	giveBookByName(bookName) {
+		let index = this.books.findIndex(item => item.name === bookName);
+
+		if (index !== -1) {
+			let deletedObj = this.books.splice(index, 1);
+			return deletedObj[0];
+		} else {
+			return null;
+		}
+	}
 }
 
 
-const library = new Library("Библиотека имени Ленина");
-
-library.addBook(new DetectiveBook("Артур Конан Дойл", "Полное собрание повестей и рассказов о Шерлоке Холмсе в одном томе", 2019, 1008));
-library.addBook(new FantasticBook("Аркадий и Борис Стругацкие", "Пикник на обочине", 1972, 168));
-library.addBook(new NovelBook("Герберт Уэллс", "Машина времени", 1895, 138));
-library.addBook(new Magazine("Мурзилка", 1924, 60));
-
-console.log(library.findBookBy("name", "Властелин колец")); //null
-console.log(library.findBookBy("releaseDate", 1924).name); //"Мурзилка"
+//задача 3
