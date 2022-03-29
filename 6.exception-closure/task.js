@@ -10,12 +10,46 @@ function parseCount(value) {
 
 function validateCount(value) {
 	let result;
-
 	try {
-		result = parseInt(value);
+		result = parseCount(value);
 	} catch(err) {
-		return err
+		return err;
+	}
+	return result;
+}
+
+//задание 2
+class Triangle {
+	constructor(a, b, c) {
+		this.a = a;
+		this.b = b;
+		this.c = c;
+
+		if (a + b < c || a + c < b || b + c < a) throw new Error(`Треугольник с такими сторонами не существует`);
 	}
 
-	return result;
+	getPerimeter() {
+		return this.a + this.b + this.c;
+	}
+
+	getArea() {
+		let p = 1 / 2 * (this.a + this.b + this.c);
+		let triangleAria = Math.sqrt( p * (p - this.a) * (p - this.b) * (p - this.c) );
+		return +triangleAria.toFixed(3);
+	}
+}
+
+function getTriangle(a, b, c) {
+	try {
+		return new Triangle(a, b, c);
+	} catch {
+		return {
+			getArea() {
+				return `Ошибка! Треугольник не существует`;
+			},
+			getPerimeter() {
+				return `Ошибка! Треугольник не существует`;
+			}
+		}
+	}
 }
