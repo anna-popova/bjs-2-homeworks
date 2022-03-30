@@ -9,13 +9,11 @@ function parseCount(value) {
 }
 
 function validateCount(value) {
-	let result;
 	try {
-		result = parseCount(value);
+		return parseCount(value);
 	} catch(err) {
 		return err;
 	}
-	return result;
 }
 
 //задание 2
@@ -25,7 +23,9 @@ class Triangle {
 		this.b = b;
 		this.c = c;
 
-		if (a + b < c || a + c < b || b + c < a) throw new Error(`Треугольник с такими сторонами не существует`);
+		if (a + b < c || a + c < b || b + c < a) {
+			throw new Error(`Треугольник с такими сторонами не существует`);
+		}
 	}
 
 	getPerimeter() {
@@ -33,7 +33,7 @@ class Triangle {
 	}
 
 	getArea() {
-		let p = 1 / 2 * (this.a + this.b + this.c);
+		let p = 1 / 2 * this.getPerimeter();
 		let triangleAria = Math.sqrt( p * (p - this.a) * (p - this.b) * (p - this.c) );
 		return +triangleAria.toFixed(3);
 	}
