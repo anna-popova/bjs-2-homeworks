@@ -29,30 +29,42 @@ class AlarmClock {
  
 	start() {
 	  function checkClock(alarm) {
-		 if(this.alarmCollection.filter(alarm => alarm.time === this.getCurrentFormattedTime)) {
-			return this.alarmCollection.callback();
-		 } 
+		 for(let i = 0; i < this.alarmCollection.length; i++) {
+			alarm = this.alarmCollection[i];
+			if(alarm.time === this.getCurrentFormattedTime()) {
+			  return alarm.callback;
+			}
+ 
+			if(alarm.id === undefined) {
+			  this.timerId = setInterval(function() {
+				 this.alarmCollection.forEach(alarm => checkClock(alarm));
+			  }, 1000);
+			}
+		 }
 	  }
+ 
+	  let checkClock = checkClock.bind(this);
 	}
+ 
+ 
+ 
 	
  }
+ 
  
  const alarm = new AlarmClock();
  // console.log(alarm);
  
- alarm.addClock('10:27', () => conslole.log('Пора вставать'), 1);
+ alarm.addClock('13:30', () => conslole.log('Пора вставать'), 1);
  // alarm.addClock('10:26', () => conslole.log('Пора вставать'), 1); //Будильник с таким id уже существует
- alarm.addClock('10:27', () => conslole.log('Скорее вставай'), 2);
- alarm.addClock('10:28', () => conslole.log('Уже надо встать!'), 3);
- alarm.addClock('10:29', () => conslole.log('Уже надо встать!')); //ошибка: нет id
- alarm.addClock('10:30', () => conslole.log('Вставай, а то проспишь!'), 4);
+ alarm.addClock('13:31', () => conslole.log('Скорее вставай'), 2);
+ alarm.addClock('13:36', () => conslole.log('Уже надо встать!'), 3);
+ alarm.addClock('13:45', () => conslole.log('Уже надо встать!')); //ошибка: нет id
+ alarm.addClock('13:50', () => conslole.log('Вставай, а то проспишь!'), 4);
  // console.log(alarm);
  
  alarm.removeClock(3);
  alarm.removeClock(4);
- console.log(alarm);
+ // console.log(alarm);
  
  // console.log(alarm.getCurrentFormattedTime());
- console.log(alarm.start());
- 
- 
