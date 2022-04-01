@@ -28,28 +28,23 @@ class AlarmClock {
 	}
  
 	start() {
-	  function checkClock(alarm) {
-		 for(let i = 0; i < this.alarmCollection.length; i++) {
-			alarm = this.alarmCollection[i];
-			if(alarm.time === this.getCurrentFormattedTime()) {
-			  return alarm.callback;
+		function checkClock(alarm) {
+			for(let i = 0; i < this.alarmCollection.length; i++) {
+				alarm = this.alarmCollection[i];
+				if(alarm.time === this.getCurrentFormattedTime()) {
+					return alarm.callback;
+				}
 			}
- 
-			if(alarm.id === undefined) {
-			  this.timerId = setInterval(function() {
-				 this.alarmCollection.forEach(alarm => checkClockBind(alarm));
-			  }, 1000);
-			}
-		 }
-	  }
- 
-	  let checkClockBind = checkClock.bind(this);
+		}
+
+		let checkClockBind = checkClock.bind(this);
+
 	}
- 
- 
- 
-	
- }
+
+
+
+
+}
  
  
  const alarm = new AlarmClock();
@@ -69,6 +64,8 @@ class AlarmClock {
  
  // console.log(alarm.getCurrentFormattedTime());
  // console.log(alarm.start());
+ 
+ console.log(alarm.alarmCollection[0].time);
  
  
  
