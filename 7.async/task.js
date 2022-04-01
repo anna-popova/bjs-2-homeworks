@@ -37,13 +37,13 @@ class AlarmClock {
  
 			if(alarm.id === undefined) {
 			  this.timerId = setInterval(function() {
-				 this.alarmCollection.forEach(alarm => checkClock(alarm));
+				 this.alarmCollection.forEach(alarm => checkClockBind(alarm));
 			  }, 1000);
 			}
 		 }
 	  }
  
-	  let checkClock = checkClock.bind(this);
+	  let checkClockBind = checkClock.bind(this);
 	}
  
  
@@ -65,6 +65,12 @@ class AlarmClock {
  
  alarm.removeClock(3);
  alarm.removeClock(4);
- // console.log(alarm);
+ console.log(alarm);
  
  // console.log(alarm.getCurrentFormattedTime());
+ // console.log(alarm.start());
+ 
+ 
+ 
+ 
+ 
