@@ -1,32 +1,31 @@
 class AlarmClock {
 	constructor() {
-	  this.alarmCollection = [];
-	  this.timerId;
+		this.alarmCollection = [];
+		this.timerId;
 	}
- 
+
 	addClock(time, action, id) {
-	  if(id === null) {
-		 throw new Error('Невозможно идентифицировать будильник. Параметр id не передан');
-	  } 
-	  
-	  if(this.alarmCollection.find(alarm => alarm.id === id)) {
-		 console.error('Будильник с таким id уже существует');
-		 return this.alarmCollection;
-	  } 
- 
-	  this.alarmCollection.push({id: id, time: time, callback: action});
-	  
+		if(id === null) {
+			throw new Error('Невозможно идентифицировать будильник. Параметр id не передан');
+		} 
+
+		if(this.alarmCollection.find(alarm => alarm.id === id)) {
+			console.error('Будильник с таким id уже существует');
+			return this.alarmCollection;
+		} 
+
+		this.alarmCollection.push({id: id, time: time, callback: action});
 	}
- 
+
 	removeClock(id) {
-	  this.alarmCollection = this.alarmCollection.filter(alarm => alarm.id !== id);
+		this.alarmCollection = this.alarmCollection.filter(alarm => alarm.id !== id);
 	}
- 
+
 	getCurrentFormattedTime() {
-	  let date = new Date();
-	  return `${date.getHours()}:${date.getMinutes()}`
+		let date = new Date();
+		return `${date.getHours()}:${date.getMinutes()}`
 	}
- 
+
 	start() {
 		function checkClock(alarm) {
 			alarm = this.alarmCollection.find(item => item.time === this.getCurrentFormattedTime());
@@ -43,6 +42,26 @@ class AlarmClock {
 				this.alarmCollection.forEach(alarm => checkClockBind(alarm));
 				}, 1000);
 		}
+	}
+
+	stop() {
+		if(this.timerId !== undefined) {
+			clearInterval(this.timerId);
+			//удалите значение из свойства "идентификатор текущего таймера":
+			this.timerId = undefined;
+		}
+	}
+
+	printAlarms() {
+		this.alarmCollection.forEach(alarm => {
+			console.log(`Будильник №${alarm.id} заведен на ${alarm.time}`);
+		})
+	}
+
+	clearAlarms() {
+		this.stop();
+		// for(let alarm in this) delete this[alarm];
+		this.alarmCollection.length = 0;
 	}
 
 }
