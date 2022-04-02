@@ -31,8 +31,8 @@ class AlarmClock {
 		function checkClock(alarm) {
 			alarm = this.alarmCollection.find(item => item.time === this.getCurrentFormattedTime());
 			console.log(alarm.callback);
-			//как вызвать функцию callback ?
-			//alarm.callback(); не срабатывает
+			//в данном случае функция - это значение у ключа callback. Как ее вызвать?
+			// alarm.callback() - не срабатывает, т.к. callback - это не метод, это свойство.
 			//alarm.callback;
 		}
 		let checkClockBind = checkClock.bind(this);
