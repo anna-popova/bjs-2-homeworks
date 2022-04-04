@@ -11,10 +11,7 @@ class AlarmClock {
 
 		if(this.alarmCollection.some(alarm => alarm.id === id)) {
 			console.error('Будильник с таким id уже существует');
-			//возвращение не актуальное
-			//!но если я не делаю return, то будильник с уже существующим id повторно записывается в alarmCollection
-			//тогда не совсем понимаю, как это сделать: Программа должна продолжать работать, но звонок не должен быть добавлен.
-			return this.alarmCollection;
+			return;
 		} 
 
 		this.alarmCollection.push({id: id, time: time, callback: action});
@@ -24,12 +21,15 @@ class AlarmClock {
 		let arrLengthBeforeRemove = this.alarmCollection.length;
 		this.alarmCollection = this.alarmCollection.filter(alarm => alarm.id !== id);
 		let arrLengthAfterRemove = this.alarmCollection.length;
-		return true ? (arrLengthBeforeRemove > arrLengthAfterRemove) : false;
+
+		if(arrLengthBeforeRemove > arrLengthAfterRemove) {
+			return true;
+		} else {
+			return false;
+		}
 	}
 
 	getCurrentFormattedTime() {
-		//?возможно ли было так указать:
-		// return new Date().toLocaleTimeString().slice(0,-3);
 		return new Date().toLocaleTimeString("ru-Ru", {
 			hour: "2-digit",
 			minute: "2-digit",
@@ -37,22 +37,18 @@ class AlarmClock {
 	}
 
 	start() {
-		//переделала function checkClock(alarm) в стрелочню, чтобы не терять контекст и не исп bind
-		checkClock((alarm) => {
-			if(alarm.time === this.getCurrentFormattedTime()) {
-				alarm.callback();
-			}
-		});
-		// function checkClock(alarm) {
+		// можно исп стрелочную функцию. тогда на стр. 55 надо переписать на checkClock(alarm)
+		// checkClock((alarm) => {
 		// 	if(alarm.time === this.getCurrentFormattedTime()) {
 		// 		alarm.callback();
 		// 	}
-		// }
-		// let checkClockBind = checkClock.bind(this);
-
-		//Вызов checkClockBind(); не корректный, так как не передаётся никакого значения
-		//получается, что он и не нужен, т.к. вы вызвали колбэк на стр. 42 ?
-		// checkClockBind();
+		// });
+		function checkClock(alarm) {
+			if(alarm.time === this.getCurrentFormattedTime()) {
+				alarm.callback();
+			}
+		}
+		let checkClockBind = checkClock.bind(this);
 
 		if(!this.timerId) {
 			this.timerId = setInterval(() => {
@@ -78,5 +74,5 @@ class AlarmClock {
 		this.stop();
 		this.alarmCollection = [];
 	}
-
 }
+
