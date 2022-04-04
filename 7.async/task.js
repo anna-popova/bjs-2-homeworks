@@ -1,16 +1,19 @@
 class AlarmClock {
 	constructor() {
 		this.alarmCollection = [];
-		this.timerId;
+		this.timerId = null;
 	}
 
 	addClock(time, action, id) {
-		if(id === null) {
+		if(!id) {
 			throw new Error('Невозможно идентифицировать будильник. Параметр id не передан');
 		} 
 
-		if(this.alarmCollection.find(alarm => alarm.id === id)) {
+		if(this.alarmCollection.some(alarm => alarm.id === id)) {
 			console.error('Будильник с таким id уже существует');
+			//возвращение не актуальное
+			//!но если я не делаю return, то будильник с уже существующим id повторно записывается в alarmCollection
+			//тогда не совсем понимаю, как это сделать: Программа должна продолжать работать, но звонок не должен быть добавлен.
 			return this.alarmCollection;
 		} 
 
@@ -18,26 +21,40 @@ class AlarmClock {
 	}
 
 	removeClock(id) {
+		let arrLengthBeforeRemove = this.alarmCollection.length;
 		this.alarmCollection = this.alarmCollection.filter(alarm => alarm.id !== id);
+		let arrLengthAfterRemove = this.alarmCollection.length;
+		return true ? (arrLengthBeforeRemove > arrLengthAfterRemove) : false;
 	}
 
 	getCurrentFormattedTime() {
-		let date = new Date();
-		return `${date.getHours()}:${date.getMinutes()}`
+		//?возможно ли было так указать:
+		// return new Date().toLocaleTimeString().slice(0,-3);
+		return new Date().toLocaleTimeString("ru-Ru", {
+			hour: "2-digit",
+			minute: "2-digit",
+		});
 	}
 
 	start() {
-		function checkClock(alarm) {
-			alarm = this.alarmCollection.find(item => item.time === this.getCurrentFormattedTime());
-			console.log(alarm.callback);
-			//в данном случае функция - это значение у ключа callback. Как ее вызвать?
-			// alarm.callback() - не срабатывает, т.к. callback - это не метод, это свойство.
-			//alarm.callback;
-		}
-		let checkClockBind = checkClock.bind(this);
-		checkClockBind();
+		//переделала function checkClock(alarm) в стрелочню, чтобы не терять контекст и не исп bind
+		checkClock((alarm) => {
+			if(alarm.time === this.getCurrentFormattedTime()) {
+				alarm.callback();
+			}
+		});
+		// function checkClock(alarm) {
+		// 	if(alarm.time === this.getCurrentFormattedTime()) {
+		// 		alarm.callback();
+		// 	}
+		// }
+		// let checkClockBind = checkClock.bind(this);
 
-		if(this.timerId === undefined) {
+		//Вызов checkClockBind(); не корректный, так как не передаётся никакого значения
+		//получается, что он и не нужен, т.к. вы вызвали колбэк на стр. 42 ?
+		// checkClockBind();
+
+		if(!this.timerId) {
 			this.timerId = setInterval(() => {
 				this.alarmCollection.forEach(alarm => checkClockBind(alarm));
 				}, 1000);
@@ -45,10 +62,9 @@ class AlarmClock {
 	}
 
 	stop() {
-		if(this.timerId !== undefined) {
+		if(!this.timerId) {
 			clearInterval(this.timerId);
-			//удалите значение из свойства "идентификатор текущего таймера":
-			this.timerId = undefined;
+			this.timerId = null;
 		}
 	}
 
@@ -60,8 +76,7 @@ class AlarmClock {
 
 	clearAlarms() {
 		this.stop();
-		// for(let alarm in this) delete this[alarm];
-		this.alarmCollection.length = 0;
+		this.alarmCollection = [];
 	}
 
 }
