@@ -37,7 +37,7 @@ class AlarmClock {
 	}
 
 	start() {
-		// можно исп стрелочную функцию. тогда на стр. 55 надо переписать на checkClock(alarm)
+		// можно исп стрелочную функцию. тогда на стр. 56 надо переписать на checkClock(alarm)
 		// const checkClock = (alarm) => {
 		// 	if(alarm.time === this.getCurrentFormattedTime()) {
 		// 		alarm.callback();
