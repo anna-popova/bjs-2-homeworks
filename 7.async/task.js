@@ -22,11 +22,7 @@ class AlarmClock {
 		this.alarmCollection = this.alarmCollection.filter(alarm => alarm.id !== id);
 		let arrLengthAfterRemove = this.alarmCollection.length;
 
-		if(arrLengthBeforeRemove > arrLengthAfterRemove) {
-			return true;
-		} else {
-			return false;
-		}
+		return arrLengthBeforeRemove > arrLengthAfterRemove;
 	}
 
 	getCurrentFormattedTime() {
