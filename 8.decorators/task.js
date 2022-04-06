@@ -24,8 +24,28 @@ function cachingDecoratorNew(func) {
 }
 
 
-function debounceDecoratorNew(func) {
-  // Ваш код
+function debounceDecoratorNew(func, ms) {
+	let isDebounced = false;
+	let timeout;
+
+	return function(...args) {
+		clearTimeout(timeout);
+
+		if(isDebounced) {
+			return;
+		}
+
+		//В подсказде сказано: Вызывайте переданную функцию немедленно и взводите флаг.
+		//Я это сделала. Но тогда вопрос, а что надо внутри setTimeout на стр. 44 делать?
+		func(...args);
+		isDebounced = true;
+
+		timeout = setTimeout( () => {
+			//функцию мы уже вызвали на стр. 41. Не понимаю, что надо сделать здесь?
+			//просто снять флаг???
+			isDebounced = false;
+		}, ms)
+	}
 }
 
 function debounceDecorator2(func) {
