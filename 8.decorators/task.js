@@ -49,23 +49,22 @@ function debounceDecorator2(func) {
 	function wrapper(...args) {
 		clearTimeout(timeout);
 
-		wrapper.history.push(args);
-		//в презентации в функции шпионе после строки 52 идет такая запись:
-		//return func(...args);
-		//но у нас вызов этой функции и так происходит на стр 62 и 58. тем более, в функции Debounce декоратор мы не 
-		//используем return для func(...args);
-		//не очень понимаю, как быть с этим моментом
-
 		timeout = setTimeout( () => {
 			func(...args);
+			//не уверена, нужно ли увеличивать здесь. это же все-таки отложенный вызов.
+			//хотя, по условиям задания получается, что нужно, тк нет уточнения, когда и как она была вызвана:
+			// мы хотим дополнительно знать, сколько всего раз была вызвана исходная функция
+			wrapper.count += 1;
 		}, ms);
 
 		if(!isDebounced) {
 			func(...args);
+			wrapper.count += 1;
 			isDebounced = true;
 		}
 	}
 
-	wrapper.history = [];
+	wrapper.count = 0;
+	
 	return wrapper;
 }
