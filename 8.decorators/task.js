@@ -43,5 +43,29 @@ function debounceDecoratorNew(func, ms) {
 }
 
 function debounceDecorator2(func) {
-  // Ваш код
+	let isDebounced = false;
+	let timeout;
+
+	function wrapper(...args) {
+		clearTimeout(timeout);
+
+		wrapper.history.push(args);
+		//в презентации в функции шпионе после строки 52 идет такая запись:
+		//return func(...args);
+		//но у нас вызов этой функции и так происходит на стр 62 и 58. тем более, в функции Debounce декоратор мы не 
+		//используем return для func(...args);
+		//не очень понимаю, как быть с этим моментом
+
+		timeout = setTimeout( () => {
+			func(...args);
+		}, ms);
+
+		if(!isDebounced) {
+			func(...args);
+			isDebounced = true;
+		}
+	}
+
+	wrapper.history = [];
+	return wrapper;
 }
